@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gastos de Campanha dos Deputados Federais Eleitos | Jamildo.com</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --azul: #0a2f5c;
+  --noite: #051428;
+  --noite-card: #091e3a;
+  --noite-card-hover: #0e274a;
+  --laranja: #ff4d15;
+  --laranja2: #ffa05c;
+  --azulvivo: #3d8bff;
+  --verde: #2fd28a;
+  --ambar: #ffbe3d;
+  --verm: #ff5d5d;
+  --roxo: #a855f7;
+  --txt: #eaf1ff;
+  --suave: #92a6c6;
+  --vidro: rgba(255, 255, 255, 0.055);
+  --vidro-forte: rgba(255, 255, 255, 0.09);
+  --borda: rgba(255, 255, 255, 0.12);
+  --borda-fina: rgba(255, 255, 255, 0.07);
+  --disp: 'Bricolage Grotesque', system-ui, sans-serif;
+  --corpo: 'DM Sans', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: var(--noite);
+  color: var(--txt);
+  font-family: var(--corpo);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* CONTAINER PRINCIPAL RÍGIDO (728px PARA EMBED E IFRAME) */
+.painel-container {
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  max-height: 728px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  background: radial-gradient(800px 400px at 95% -10%, rgba(255, 77, 21, 0.18), transparent 60%),
+              radial-gradient(800px 400px at 5% 100%, rgba(61, 139, 255, 0.15), transparent 60%),
+              linear-gradient(180deg, #07203f 0%, var(--noite) 80%);
+  border: 1px solid var(--borda);
+  border-radius: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* TOPO / HEADER */
+header.topo {
+  padding: 10px 16px 8px;
+  background: rgba(5, 20, 40, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--borda);
+  flex-shrink: 0;
+}
+
+.topo-linha1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.marca img {
+  height: 24px;
+  display: block;
+  filter: brightness(0) invert(1);
+}
+
+.marca-titulo h1 {
+  font-family: var(--disp);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.marca-titulo h1 span {
+  color: var(--laranja2);
+}
+
+.marca-titulo small {
+  font-size: 0.72rem;
+  color: var(--suave);
+  display: block;
+}
+
+/* CARDS DE MÉTRICAS / KPIS RESUMO */
+.metricas-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.m-card {
+  background: var(--vidro);
+  border: 1px solid var(--borda-fina);
+  border-radius: 10px;
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.15s;
+}
+
+.m-card:hover { border-color: var(--laranja2); }
+
+.m-card span {
+  font-size: 0.68rem;
+  color: var(--suave);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.m-card strong {
+  font-family: var(--disp);
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.15;
+  margin-top: 1px;
+}
+
+.m-card small {
+  font-size: 0.66rem;
+  color: var(--laranja2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* BARRA DE CONTROLES E FILTROS */
+.controles-barra {
+  padding: 8px 16px;
+  background: rgba(5, 18, 36, 0.75);
+  border-bottom: 1px solid var(--borda-fina);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.busca-caixa {
+  flex: 1;
+  min-width: 180px;
+  position: relative;
+}
+
+.busca-caixa input {
+  width: 100%;
+  background: var(--vidro);
+  border: 1px solid var(--borda);
+  border-radius: 99px;
+  padding: 6px 12px 6px 32px;
+  font-size: 0.8rem;
+  color: #fff;
+  outline: none;
+  transition: all 0.15s;
+}
+
+.busca-caixa input:focus {
+  border-color: var(--laranja);
+  box-shadow: 0 0 0 3px rgba(255, 77, 21, 0.18);
+}
+
+.busca-caixa::before {
+  content: "🔎";
+  position: absolute;
+  left: 10px;
+  top: 6px;
+  font-size: 0.78rem;
+  opacity: 0.6;
+}
+
+.select-wrap select {
+  background: #0b2444;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  color: var(--txt);
+  outline: none;
+  cursor: pointer;
+}
+
+.select-wrap select:focus { border-color: var(--laranja); }
+
+.view-toggle {
+  display: flex;
+  background: var(--vidro);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.view-btn {
+  border: 0;
+  background: none;
+  padding: 5px 9px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--suave);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.view-btn.ativo {
+  background: var(--laranja);
+  color: #fff;
+}
+
+.contagem-label {
+  font-size: 0.74rem;
+  color: var(--suave);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* ÁREA ROLÁVEL PRINCIPAL */
+.conteudo-scroll {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 12px 16px;
+  scroll-behavior: smooth;
+}
+
+/* Scrollbar fina elegante */
+.conteudo-scroll::-webkit-scrollbar { width: 6px; }
+.conteudo-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+.conteudo-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
+.conteudo-scroll::-webkit-scrollbar-thumb:hover { background: var(--laranja); }
+
+/* GRID DE CARDS */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+  gap: 12px;
+}
+
+.dep-card {
+  background: var(--noite-card);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+  position: relative;
+  cursor: pointer;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.dep-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 160, 92, 0.4);
+  box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.5);
+  background: var(--noite-card-hover);
+}
+
+/* Topo do card com foto e identificação */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.foto-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1.5px solid var(--borda);
+  flex-shrink: 0;
+  position: relative;
+  background: linear-gradient(135deg, var(--azul), #051428);
+  display: grid;
+  place-items: center;
+}
+
+.foto-wrapper img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.foto-fallback {
+  font-family: var(--disp);
+  font-weight: 800;
+  font-size: 1rem;
+  color: #fff;
+  text-align: center;
+}
+
+.dep-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.dep-nome {
+  font-family: var(--disp);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.dep-badges {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 3px;
+  flex-wrap: wrap;
+}
+
+.badge-partido {
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 1px 7px;
+  border-radius: 4px;
+  background: var(--p-cor, var(--azulvivo));
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+
+.badge-numero {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--suave);
+  background: rgba(255, 255, 255, 0.08);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.badge-situacao {
+  font-size: 0.64rem;
+  color: var(--suave);
+}
+
+/* Seção Financeira do Card */
+.card-dinheiro {
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid var(--borda-fina);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-top: 2px;
+}
+
+.din-linha1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.din-linha1 span {
+  font-size: 0.7rem;
+  color: var(--suave);
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.din-linha1 strong {
+  font-family: var(--disp);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--laranja2);
+}
+
+/* Barra de proporção de gasto */
+.trilho-gasto {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  margin: 5px 0;
+  overflow: hidden;
+}
+
+.trilho-gasto i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--azulvivo), var(--laranja));
+  border-radius: 4px;
+}
+
+.din-linha2 {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--suave);
+}
+
+.din-linha2 b {
+  color: #fff;
+  font-family: var(--mono);
+}
+
+/* Destaque Maior Despesa e Doador */
+.card-destaques {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.74rem;
+  line-height: 1.3;
+  margin-top: 2px;
+}
+
+.destaque-item {
+  display: flex;
+  gap: 5px;
+  align-items: flex-start;
+  color: #cbd5e1;
+  min-width: 0;
+  width: 100%;
+}
+
+.destaque-item span.rotulo {
+  color: var(--suave);
+  font-size: 0.68rem;
+  font-weight: 700;
+  min-width: 68px;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.destaque-item span.valor {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 1;
+}
+
+/* MODO TABELA COMPARATIVA */
+.tabela-wrap {
+  display: none;
+  background: var(--noite-card);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tabela-wrap.visivel { display: block; }
+
+table.tab-comparativa {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+  text-align: left;
+}
+
+table.tab-comparativa th {
+  background: rgba(5, 18, 36, 0.9);
+  padding: 8px 12px;
+  color: var(--suave);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  border-bottom: 1px solid var(--borda);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+table.tab-comparativa td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--borda-fina);
+}
+
+table.tab-comparativa tr:hover {
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+}
+
+.td-dep {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.td-dep img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* GAVETA LATERAL DO DEPUTADO */
+.backdrop-gaveta {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 50;
+}
+
+.backdrop-gaveta.ativo { opacity: 1; pointer-events: auto; }
+
+aside.gaveta-detalhe {
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: min(420px, 100%);
+  background: linear-gradient(180deg, #0c2a50, #061830);
+  border-left: 1px solid var(--borda);
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.7);
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+aside.gaveta-detalhe.ativo { transform: translateX(0); }
+
+.gav-header {
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--borda);
+  background: rgba(5, 18, 36, 0.5);
+}
+
+.gav-header h3 {
+  font-family: var(--disp);
+  font-size: 1.05rem;
+  color: #fff;
+}
+
+.btn-fechar {
+  background: var(--vidro);
+  border: 0;
+  color: var(--suave);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.btn-fechar:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
+
+.gav-corpo {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.gav-perfil {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.gav-foto {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--laranja);
+  flex-shrink: 0;
+  position: relative;
+}
+.gav-foto img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+
+.gav-metricas-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.gav-box {
+  background: var(--vidro);
+  border: 1px solid var(--borda-fina);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.gav-box span { font-size: 0.68rem; color: var(--suave); text-transform: uppercase; }
+.gav-box strong { display: block; font-family: var(--disp); font-size: 1.05rem; color: #fff; margin-top: 2px; }
+
+.gav-secao-titulo {
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  color: var(--suave);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+
+.gav-destaque-box {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--borda-fina);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+/* RESPONSIVIDADE (MOBILE & TELAS PEQUENAS) */
+@media (max-width: 768px) {
+  .metricas-grid { grid-template-columns: repeat(2, 1fr); }
+  .cards-grid { grid-template-columns: minmax(0, 1fr); }
+  .controles-barra { gap: 6px; }
+  .contagem-label { display: none; }
+  .topo-linha1 { flex-direction: column; align-items: flex-start; gap: 4px; }
+}
+</style>
+</head>
+<body>
+
+<div class="painel-container">
+  <!-- TOPO COM MARCA E KPIS -->
+  <header class="topo">
+    <div class="topo-linha1">
+      <a class="marca" href="https://jamildo.com" target="_blank">
+        <img src="https://jamildo.com/media/uploads/logojamildo.png" alt="Jamildo.com" onerror="this.outerHTML='<b style=&quot;font-family:var(--disp);color:#fff;&quot;>Jamildo<span style=&quot;color:#ff4d15&quot;>.com</span></b>'">
+        <div class="marca-titulo">
+          <h1>Gastos de Campanha dos <span>Deputados Federais</span></h1>
+          <small>Eleições PE 2026 · Prestação de contas oficial dos 25 parlamentares federais</small>
+        </div>
+      </a>
+    </div>
+
+    <!-- 4 KPIS GLOBAIS -->
+    <div class="metricas-grid">
+      <div class="m-card">
+        <span>Total Declarado</span>
+        <strong id="kpi-total">R$ 57,75 mi</strong>
+        <small>25 eleitos somados</small>
+      </div>
+      <div class="m-card">
+        <span>Gasto Médio</span>
+        <strong id="kpi-media">R$ 2,31 mi</strong>
+        <small>por deputado federal</small>
+      </div>
+      <div class="m-card">
+        <span>Maior Despesa</span>
+        <strong id="kpi-maior" style="color:var(--laranja2)">R$ 3,25 mi</strong>
+        <small>Fernando Monteiro (PSD)</small>
+      </div>
+      <div class="m-card">
+        <span>Mais Econômico</span>
+        <strong id="kpi-menor" style="color:var(--verde)">R$ 719,1 mil</strong>
+        <small>Eduardo Moura (NOVO)</small>
+      </div>
+    </div>
+  </header>
+
+  <!-- BARRA DE FILTROS & CONTROLES -->
+  <div class="controles-barra">
+    <div class="busca-caixa">
+      <input type="search" id="filtro-busca" placeholder="Buscar por nome ou número..." autocomplete="off">
+    </div>
+
+    <div class="select-wrap">
+      <select id="filtro-partido">
+        <option value="">Todos os partidos</option>
+      </select>
+    </div>
+
+    <div class="select-wrap">
+      <select id="filtro-faixa">
+        <option value="">Todas as faixas</option>
+        <option value="3M">Acima de R$ 3 Milhões</option>
+        <option value="2M-3M">R$ 2 mi a R$ 3 milhões</option>
+        <option value="1M-2M">R$ 1 mi a R$ 2 milhões</option>
+        <option value="ATE1M">Até R$ 1 milhão</option>
+      </select>
+    </div>
+
+    <div class="select-wrap">
+      <select id="ordenacao">
+        <option value="despesa-desc">Maior gasto total</option>
+        <option value="despesa-asc">Mais econômicos</option>
+        <option value="custo-desc">Voto mais caro (R$/voto)</option>
+        <option value="custo-asc">Voto mais barato (R$/voto)</option>
+        <option value="votos-desc">Mais votados</option>
+        <option value="nome-asc">Nome (A-Z)</option>
+      </select>
+    </div>
+
+    <div class="view-toggle">
+      <button class="view-btn ativo" id="btn-view-cards" onclick="mudarVisao('cards')">🗂️ Cards</button>
+      <button class="view-btn" id="btn-view-tabela" onclick="mudarVisao('tabela')">📊 Tabela</button>
+    </div>
+
+    <span class="contagem-label" id="label-contagem">25 deputados</span>
+  </div>
+
+  <!-- ÁREA DE ROLAGEM PRINCIPAL (CARDS E TABELA) -->
+  <main class="conteudo-scroll" id="scroll-principal">
+    <!-- Grade de Cards -->
+    <div class="cards-grid" id="cards-grid"></div>
+
+    <!-- Tabela Comparativa -->
+    <div class="tabela-wrap" id="tabela-wrap">
+      <table class="tab-comparativa">
+        <thead>
+          <tr>
+            <th>Deputado</th>
+            <th>Partido</th>
+            <th>Votos</th>
+            <th>Total Gasto</th>
+            <th>R$ / Voto</th>
+            <th>Maior Despesa</th>
+            <th>Principal Doador</th>
+          </tr>
+        </thead>
+        <tbody id="tabela-corpo"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- GAVETA LATERAL DE DETALHES -->
+  <div class="backdrop-gaveta" id="backdrop" onclick="fecharGaveta()"></div>
+  <aside class="gaveta-detalhe" id="gaveta">
+    <div class="gav-header">
+      <h3>Raio-X de Campanha</h3>
+      <button class="btn-fechar" onclick="fecharGaveta()">✕</button>
+    </div>
+    <div class="gav-corpo" id="gaveta-conteudo"></div>
+  </aside>
+</div>
+
+<script>
+/* DADOS EMBUTIDOS 100% AUTOCONTIDOS */
+const DADOS = [{"nome": "ANDERSON FERREIRA", "partido": "PL", "votos": 185429, "numero": "2222", "situacao": "Eleito por QP", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_anderson_ferreira.jpg", "despesas": 3101281.65, "custo_voto": 16.72490090546786, "maior_despesa": "materiais impressos - R$ 1.161.288,86", "maior_doador": "Direção Nacional - PL R$ 3.100.000,00"}, {"nome": "AUGUSTO COUTINHO", "partido": "REPUBLICANOS", "votos": 94737, "numero": "1000", "situacao": "Eleito por QP", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_augusto_coutinho.jpg", "despesas": 3090442.63, "custo_voto": 32.621284503414714, "maior_despesa": "despesa com pessoal R$ 1.352.750,00", "maior_doador": "Direção Nacional - REPUBLICANOS R$ 1.530.000,00"}, {"nome": "CARLOS VERAS", "partido": "PT", "votos": 133118, "numero": "1314", "situacao": "Eleito por QP", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_carlos_veras.jpg", "despesas": 2065054.91, "custo_voto": 15.512965263901199, "maior_despesa": "materiais impressos - R$ 851.807,53", "maior_doador": "Direção Nacional - PT R$ 2.015.480,00"}, {"nome": "CLARISSA TÉRCIO", "partido": "PP", "votos": 110608, "numero": "1122", "situacao": "Eleito por QP", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_clarissa_tercio.jpg", "despesas": 3110401.54, "custo_voto": 28.120945501229567, "maior_despesa": "Atividade de militância e mobilização de rua - R$ 954.920,00", "maior_doador": "Direção Nacional - PP R$ 3.077.201,54"}, {"nome": "CLODOALDO MAGALHÃES", "partido": "PV", "votos": 92229, "numero": "4333", "situacao": "Eleito por QP", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_clodoaldo_magalhaes.jpg", "despesas": 2782516.49, "custo_voto": 30.16964826681413, "maior_despesa": "Diversas a especificar R$ 1.574.000,00", "maior_doador": "Direção Nacional - PV R$ 2.500.000,00"}, {"nome": "EDUARDO MOURA", "partido": "NOVO", "votos": 113482, "numero": "3030", "situacao": "Eleito por média", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_eduardo_moura.jpg", "despesas": 719129.45, "custo_voto": 6.336947269170441, "maior_despesa": "Impulsionamento de Conteúdo - R$ 349.998,00", "maior_doador": "Direção Nacional - NOVO R$ 690.000,00"}, {"nome": "ELIANE SOARES", "partido": "PSB", "votos": 102396, "numero": "4000", "situacao": "Eleito por QP", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_eliane_soares.jpg", "despesas": 1836777.37, "custo_voto": 17.937979706238526, "maior_despesa": "materiais impressos R$ 823.894,56", "maior_doador": "Direção Nacional - PSB R$ 1.364.000,00"}, {"nome": "FELIPE CARRERAS", "partido": "PSB", "votos": 148971, "numero": "4004", "situacao": "Eleito por QP", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_felipe_carreras.jpg", "despesas": 3054064.67, "custo_voto": 20.50106846298944, "maior_despesa": "materiais impressos - R$ 951.014,17", "maior_doador": "Direção Nacional - PSB R$ 2.250.000,00"}, {"nome": "FERNANDO FILHO", "partido": "UNIÃO", "votos": 124147, "numero": "4401", "situacao": "Eleito por QP", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_fernando_filho.jpg", "despesas": 3057146.99, "custo_voto": 24.625218410432794, "maior_despesa": "impulsionamento de conteúdo - R$ 675.000,00", "maior_doador": "Direção Nacional - UNIÃO R$ 2.823.220,00"}, {"nome": "FERNANDO MONTEIRO", "partido": "PSD", "votos": 113844, "numero": "5590", "situacao": "Eleito por QP", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_fernando_monteiro.jpg", "despesas": 3254996.53, "custo_voto": 28.591726661044937, "maior_despesa": "materiais impressos - R$ 1.593.929,03", "maior_doador": "Direção Nacional - PSD R$ 2.300.000,00"}, {"nome": "GABRIEL PORTO", "partido": "PSB", "votos": 114860, "numero": "4010", "situacao": "Eleito por QP", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_gabriel_porto.jpg", "despesas": 1415530.8, "custo_voto": 12.323966567995821, "maior_despesa": "materiais impressos - R$ 1.330.163,10", "maior_doador": "Direção Nacional - PSB R$ 300.000,00"}, {"nome": "GILSON MACHADO", "partido": "PODE", "votos": 156754, "numero": "2022", "situacao": "Eleito por QP", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_gilson_machado.jpg", "despesas": 2995829.09, "custo_voto": 19.111659606772395, "maior_despesa": "adesivos - R$ 972.450,00", "maior_doador": "Direção Nacional - PODE R$ 1.500.000,00"}, {"nome": "GUILHERME UCHOA JUNIOR", "partido": "PSD", "votos": 98569, "numero": "5500", "situacao": "Eleito por QP", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_guilherme_uchoa_junior.jpg", "despesas": 2354000.0, "custo_voto": 23.881747811177956, "maior_despesa": "materiais impressos - R$ 798.055,00", "maior_doador": "Direção Nacional - PSD R$ 2.300.000,00"}, {"nome": "IZA ARRUDA", "partido": "MDB", "votos": 103758, "numero": "1515", "situacao": "Eleito por média", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_iza_arruda.jpg", "despesas": 2930991.58, "custo_voto": 28.248343067522505, "maior_despesa": "materiais impressos - R$ 1.218.052,80", "maior_doador": "Direção Nacional - MDB R$ 2.850.000,00"}, {"nome": "JONES MANOEL", "partido": "PSOL", "votos": 249077, "numero": "5050", "situacao": "Eleito por QP", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_jones_manoel.jpg", "despesas": 1272830.24, "custo_voto": 5.110187773258872, "maior_despesa": "materiais impressos - R$ 268.155,93", "maior_doador": "QueroApoiar.com.br R$ 639.902,22"}, {"nome": "JULIANA DE CHAPARRAL", "partido": "UNIÃO", "votos": 183089, "numero": "4444", "situacao": "Eleito por QP", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_juliana_de_chaparral.jpg", "despesas": 2899235.18, "custo_voto": 15.835113960969803, "maior_despesa": "materiais impressos - R$ 668.992,24", "maior_doador": "Direção Nacional - UNIÃO R$ 2.899.800,00"}, {"nome": "LIANA CIRNE", "partido": "PT", "votos": 85039, "numero": "1310", "situacao": "Eleito por média", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_liana_cirne.jpg", "despesas": 1556303.33, "custo_voto": 18.301053986994205, "maior_despesa": "militancia e mobilização de rua - R$ 649.881,00", "maior_doador": "Direção Nacional - PT R$ 1.417.600,00"}, {"nome": "LULA DA FONTE", "partido": "PP", "votos": 147913, "numero": "1111", "situacao": "Eleito por QP", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_lula_da_fonte.jpg", "despesas": 3176252.51, "custo_voto": 21.473788713635717, "maior_despesa": "prestados por terceiros - R$ 1.117.880,55", "maior_doador": "Direção Nacional - PP R$ 3.050.000,00"}, {"nome": "MARCELO GOUVEIA", "partido": "PODE", "votos": 183124, "numero": "2020", "situacao": "Eleito por QP", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_marcelo_gouveia.jpg", "despesas": 2153886.04, "custo_voto": 11.761899259518142, "maior_despesa": "materiais impressos - R$ 501.724,95", "maior_doador": "Direção Nacional - PODE R$ 1.735.000,00"}, {"nome": "PEDRO CAMPOS", "partido": "PSB", "votos": 261555, "numero": "4040", "situacao": "Eleito por QP", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_pedro_campos.jpg", "despesas": 2711737.6, "custo_voto": 10.367752862686624, "maior_despesa": "materiais impressos - R$ 1.509.376,50", "maior_doador": "Direção Nacional - PSB R$ 2.250.000,00"}, {"nome": "RICARDO TEOBALDO", "partido": "PODE", "votos": 59951, "numero": "2055", "situacao": "Eleito por média", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_ricardo_teobaldo.jpg", "despesas": 1310643.46, "custo_voto": 21.861911561108236, "maior_despesa": "MATERIAIS IMPRESSOS - R$ 668.691,00", "maior_doador": "Direção Nacional - PODE R$ 800.000,00"}, {"nome": "ROSA AMORIM", "partido": "PT", "votos": 144101, "numero": "1303", "situacao": "Eleito por QP", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_rosa_amorim.jpg", "despesas": 1846660.42, "custo_voto": 12.815042366118208, "maior_despesa": "impulsionamento de facebook - R$ 600.000,00", "maior_doador": "Direção Nacional - PT R$ 1.801.620,69"}, {"nome": "SILVIO COSTA FILHO", "partido": "REPUBLICANOS", "votos": 170859, "numero": "1010", "situacao": "Eleito por QP", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_silvio_costa_filho.jpg", "despesas": 2535212.35, "custo_voto": 14.838038089886984, "maior_despesa": "materiais impressos - R$ 1.645.336,75", "maior_doador": "Direção Nacional - REP R$ 1.049.863,70"}, {"nome": "THIAGO MEDINA", "partido": "PL", "votos": 88354, "numero": "2288", "situacao": "Eleito por média", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_thiago_medina.jpg", "despesas": 744300.43, "custo_voto": 8.424071688887883, "maior_despesa": "IMPULSIONAMENTO META - R$ 563.104,06", "maior_doador": "Direção Nacional - PL R$ 450.000,00"}, {"nome": "WALDEMAR OLIVEIRA", "partido": "AVANTE", "votos": 97152, "numero": "7070", "situacao": "Eleito por média", "foto": "https://jamildo.com/media/uploads/deputados-federais-2027/deputado_federal_-_waldemar_oliveira.jpg", "despesas": 1776471.4, "custo_voto": 18.285484601449273, "maior_despesa": "materiais impressos - R$ 872.552,43", "maior_doador": "Direção Nacional - AVANTE R$ 1.470.000,00"}];
+
+/* CORES PARTIDÁRIAS OFICIAIS */
+const CORES_PARTIDOS = {
+  'PP': '#0a4275',
+  'PL': '#1c355e',
+  'PSD': '#ff8000',
+  'PSB': '#ffcb05',
+  'PT': '#cc0000',
+  'PODE': '#1bb698',
+  'UNIÃO': '#00a4e4',
+  'MDB': '#009540',
+  'PV': '#2e7d32',
+  'REPUBLICANOS': '#1b4079',
+  'NOVO': '#ff6600',
+  'AVANTE': '#0099cc',
+  'PCDOB': '#b71c1c',
+  'PSOL': '#881337'
+};
+
+const corPartido = sigla => CORES_PARTIDOS[sigla.toUpperCase()] || '#3d8bff';
+
+/* FUNÇÕES DE FORMATAÇÃO */
+const brl = v => (+v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+const cur = v => {
+  v = +v || 0;
+  if (v >= 1e6) return 'R$ ' + (v / 1e6).toFixed(2).replace('.', ',') + ' mi';
+  if (v >= 1e3) return 'R$ ' + Math.round(v / 1e3) + ' mil';
+  return brl(v);
+};
+const norm = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+const ini = nome => String(nome || '').split(' ').filter(Boolean).slice(0, 2).map(p => p[0]).join('').toUpperCase();
+
+/* ESTADO DA APLICAÇÃO */
+let listaFiltrada = [...DADOS];
+let visaoAtual = 'cards';
+const MAX_GASTO = Math.max(...DADOS.map(d => d.despesas));
+
+/* INICIALIZAÇÃO */
+function init() {
+  popularSelectPartidos();
+  aplicarFiltros();
+
+  document.getElementById('filtro-busca').addEventListener('input', aplicarFiltros);
+  document.getElementById('filtro-partido').addEventListener('change', aplicarFiltros);
+  document.getElementById('filtro-faixa').addEventListener('change', aplicarFiltros);
+  document.getElementById('ordenacao').addEventListener('change', aplicarFiltros);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') fecharGaveta();
+  });
+}
+
+/* POPULAR SELECT DE PARTIDOS */
+function popularSelectPartidos() {
+  const partidos = [...new Set(DADOS.map(d => d.partido))].sort();
+  const sel = document.getElementById('filtro-partido');
+  partidos.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p;
+    opt.textContent = p;
+    sel.appendChild(opt);
+  });
+}
+
+/* FILTROS E ORDENAÇÃO */
+function aplicarFiltros() {
+  const q = norm(document.getElementById('filtro-busca').value).trim();
+  const partidoSel = document.getElementById('filtro-partido').value;
+  const faixaSel = document.getElementById('filtro-faixa').value;
+  const ord = document.getElementById('ordenacao').value;
+
+  listaFiltrada = DADOS.filter(d => {
+    if (partidoSel && d.partido !== partidoSel) return false;
+
+    if (faixaSel === '3M' && d.despesas < 3000000) return false;
+    if (faixaSel === '2M-3M' && (d.despesas < 2000000 || d.despesas >= 3000000)) return false;
+    if (faixaSel === '1M-2M' && (d.despesas < 1000000 || d.despesas >= 2000000)) return false;
+    if (faixaSel === 'ATE1M' && d.despesas >= 1000000) return false;
+
+    if (q) {
+      const alvo = norm(`${d.nome} ${d.partido} ${d.numero} ${d.maior_despesa} ${d.maior_doador}`);
+      if (!alvo.includes(q)) return false;
+    }
+    return true;
+  });
+
+  // Ordenação
+  if (ord === 'despesa-desc') listaFiltrada.sort((a, b) => b.despesas - a.despesas);
+  else if (ord === 'despesa-asc') listaFiltrada.sort((a, b) => a.despesas - b.despesas);
+  else if (ord === 'custo-desc') listaFiltrada.sort((a, b) => b.custo_voto - a.custo_voto);
+  else if (ord === 'custo-asc') listaFiltrada.sort((a, b) => a.custo_voto - b.custo_voto);
+  else if (ord === 'votos-desc') listaFiltrada.sort((a, b) => b.votos - a.votos);
+  else if (ord === 'nome-asc') listaFiltrada.sort((a, b) => a.nome.localeCompare(b.nome));
+
+  document.getElementById('label-contagem').textContent = `${listaFiltrada.length} de ${DADOS.length} deputados`;
+
+  renderizar();
+}
+
+/* RENDERIZAÇÃO PRINCIPAL */
+function renderizar() {
+  if (visaoAtual === 'cards') {
+    renderizarCards();
+  } else {
+    renderizarTabela();
+  }
+}
+
+/* MUDAR MODO DE VISÃO (CARDS VS TABELA) */
+function mudarVisao(modo) {
+  visaoAtual = modo;
+  document.getElementById('btn-view-cards').classList.toggle('ativo', modo === 'cards');
+  document.getElementById('btn-view-tabela').classList.toggle('ativo', modo === 'tabela');
+  document.getElementById('cards-grid').style.display = modo === 'cards' ? 'grid' : 'none';
+  document.getElementById('tabela-wrap').classList.toggle('visivel', modo === 'tabela');
+  renderizar();
+}
+
+/* RENDERIZAR CARDS */
+function renderizarCards() {
+  const grid = document.getElementById('cards-grid');
+  if (!listaFiltrada.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:30px; color:var(--suave);">Nenhum deputado encontrado para os filtros selecionados.</div>';
+    return;
+  }
+
+  grid.innerHTML = listaFiltrada.map(d => {
+    const pct = Math.min(100, Math.round((d.despesas / MAX_GASTO) * 100));
+    const corP = corPartido(d.partido);
+    return `
+      <article class="dep-card" onclick="abrirGaveta('${d.nome}')">
+        <div class="card-header">
+          <div class="foto-wrapper" style="--borda-cor:${corP}">
+            <span class="foto-fallback">${ini(d.nome)}</span>
+            <img src="${d.foto}" alt="${d.nome}" loading="lazy" referrerpolicy="no-referrer" onload="this.previousElementSibling.style.display='none';" onerror="this.remove();">
+          </div>
+          <div class="dep-info">
+            <h2 class="dep-nome" title="${d.nome}">${d.nome}</h2>
+            <div class="dep-badges">
+              <span class="badge-partido" style="--p-cor:${corP}">${d.partido}</span>
+              <span class="badge-numero">${d.numero}</span>
+              <span class="badge-situacao">${d.situacao}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-dinheiro">
+          <div class="din-linha1">
+            <span>Despesas Totais</span>
+            <strong>${brl(d.despesas)}</strong>
+          </div>
+          <div class="trilho-gasto"><i style="width:${pct}%"></i></div>
+          <div class="din-linha2">
+            <span>Votação: <b>${d.votos.toLocaleString('pt-BR')} votos</b></span>
+            <span>Custo/voto: <b style="color:var(--verde)">R$ ${d.custo_voto.toFixed(2)}</b></span>
+          </div>
+        </div>
+
+        <div class="card-destaques">
+          <div class="destaque-item">
+            <span class="rotulo">🏷️ Maior gasto:</span>
+            <span class="valor" title="${d.maior_despesa}">${d.maior_despesa}</span>
+          </div>
+          <div class="destaque-item">
+            <span class="rotulo">🏛️ Doador:</span>
+            <span class="valor" title="${d.maior_doador}">${d.maior_doador}</span>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+/* RENDERIZAR TABELA */
+function renderizarTabela() {
+  const corpo = document.getElementById('tabela-corpo');
+  if (!listaFiltrada.length) {
+    corpo.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:20px; color:var(--suave);">Nenhum resultado.</td></tr>';
+    return;
+  }
+
+  corpo.innerHTML = listaFiltrada.map(d => `
+    <tr onclick="abrirGaveta('${d.nome}')">
+      <td>
+        <div class="td-dep">
+          <img src="${d.foto}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'">
+          <b>${d.nome}</b>
+        </div>
+      </td>
+      <td><span class="badge-partido" style="--p-cor:${corPartido(d.partido)}">${d.partido}</span></td>
+      <td style="font-family:var(--mono)">${d.votos.toLocaleString('pt-BR')}</td>
+      <td style="font-family:var(--disp); font-weight:800; color:var(--laranja2)">${brl(d.despesas)}</td>
+      <td style="font-family:var(--mono); color:var(--verde); white-space:nowrap;">R$ ${d.custo_voto.toFixed(2)}</td>
+      <td style="max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${d.maior_despesa}</td>
+      <td style="max-width:180px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${d.maior_doador}</td>
+    </tr>
+  `).join('');
+}
+
+/* GAVETA LATERAL DE DETALHES */
+function abrirGaveta(nome) {
+  const dep = DADOS.find(d => d.nome === nome);
+  if (!dep) return;
+
+  const corP = corPartido(dep.partido);
+  const pct = Math.min(100, Math.round((dep.despesas / MAX_GASTO) * 100));
+
+  document.getElementById('gaveta-conteudo').innerHTML = `
+    <div class="gav-perfil">
+      <div class="gav-foto">
+        <img src="${dep.foto}" alt="${dep.nome}" referrerpolicy="no-referrer" onerror="this.src=''">
+      </div>
+      <div>
+        <h2 style="font-family:var(--disp); font-size:1.2rem; line-height:1.2;">${dep.nome}</h2>
+        <div style="display:flex; gap:6px; align-items:center; margin-top:5px;">
+          <span class="badge-partido" style="--p-cor:${corP}">${dep.partido}</span>
+          <span class="badge-numero">${dep.numero}</span>
+          <span class="badge-situacao">${dep.situacao}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="gav-metricas-grid">
+      <div class="gav-box">
+        <span>Despesas de Campanha</span>
+        <strong style="color:var(--laranja2)">${brl(dep.despesas)}</strong>
+      </div>
+      <div class="gav-box">
+        <span>Votação em Urnas</span>
+        <strong>${dep.votos.toLocaleString('pt-BR')} votos</strong>
+      </div>
+      <div class="gav-box">
+        <span>Custo por Voto</span>
+        <strong style="color:var(--verde)">R$ ${dep.custo_voto.toFixed(2)}</strong>
+      </div>
+      <div class="gav-box">
+        <span>Posição no Ranking</span>
+        <strong>${DADOS.slice().sort((a,b)=>b.despesas-a.despesas).findIndex(x=>x.nome===dep.nome)+1}º de 25</strong>
+      </div>
+    </div>
+
+    <div>
+      <div class="gav-secao-titulo">Volume do Gasto Relativo</div>
+      <div class="trilho-gasto" style="height:8px"><i style="width:${pct}%"></i></div>
+      <small style="color:var(--suave); font-size:0.7rem;">Representa ${pct}% do maior gasto registrado na bancada federal (Fernando Monteiro: R$ 3,25 mi)</small>
+    </div>
+
+    <div>
+      <div class="gav-secao-titulo">🏷️ Maior Despesa Declarada</div>
+      <div class="gav-destaque-box" style="border-left: 3px solid var(--laranja);">
+        <b>${dep.maior_despesa}</b>
+      </div>
+    </div>
+
+    <div>
+      <div class="gav-secao-titulo">🏛️ Principal Doador da Campanha</div>
+      <div class="gav-destaque-box" style="border-left: 3px solid var(--azulvivo);">
+        <b>${dep.maior_doador}</b>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('backdrop').classList.add('ativo');
+  document.getElementById('gaveta').classList.add('ativo');
+}
+
+function fecharGaveta() {
+  document.getElementById('backdrop').classList.remove('ativo');
+  document.getElementById('gaveta').classList.remove('ativo');
+}
+
+// Iniciar na carga
+window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
